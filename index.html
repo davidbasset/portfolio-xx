@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Basset — Développeur Fullstack Vue.js / React / Node.js</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #08080f;
+    --bg2: #0f0f1a;
+    --bg3: #13131f;
+    --ink: #e8e4dc;
+    --ink2: #9f9a8e;
+    --ink3: #5a5650;
+    --accent: #c8f059;
+    --accent2: #7b5cff;
+    --accent3: #ff5c7b;
+    --border: rgba(200,240,89,0.15);
+    --font-head: 'DM Serif Display', serif;
+    --font-sans: 'Syne', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, opacity 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s ease, width 0.2s, height 0.2s;
+    opacity: 0.5;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,8,15,0.7);
+  }
+  .nav-logo {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  .nav-links {
+    display: flex; gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink2);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 0.5rem 1.25rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 10rem 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(200,240,89,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,240,89,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+  .hero-content { position: relative; max-width: 900px; }
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block; width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  h1.hero-name {
+    font-family: var(--font-head);
+    font-size: clamp(4rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  h1.hero-name em {
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--accent);
+  }
+  .hero-roles {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink2);
+    margin-bottom: 3rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .hero-roles .sep { color: var(--accent); }
+  .hero-typing {
+    color: var(--accent);
+    border-right: 2px solid var(--accent);
+    animation: blink 0.7s infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .hero-scroll {
+    position: absolute; bottom: 3rem; right: 4rem;
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--ink3); letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: float 2s ease-in-out infinite;
+  }
+  .hero-scroll .line {
+    width: 1px; height: 60px;
+    background: linear-gradient(var(--accent), transparent);
+  }
+  @keyframes float {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)}
+  }
+
+  /* STACK */
+  .section { padding: 7rem 4rem; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block; width: 24px; height: 1px;
+    background: var(--accent);
+  }
+  h2.section-title {
+    font-family: var(--font-head);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    margin-bottom: 3rem;
+    letter-spacing: -0.02em;
+  }
+  h2.section-title em { font-style: italic; }
+
+  /* Stack grid */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  .stack-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .stack-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(200,240,89,0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .stack-card:hover { border-color: rgba(200,240,89,0.5); transform: translateY(-3px); }
+  .stack-card:hover::before { opacity: 1; }
+  .stack-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .stack-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+  .stack-level {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .stack-bar {
+    margin-top: 0.75rem;
+    height: 2px;
+    background: rgba(200,240,89,0.1);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  .stack-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    transform-origin: left;
+    animation: growBar 1.2s ease-out forwards;
+    transform: scaleX(0);
+  }
+  @keyframes growBar { to { transform: scaleX(1); } }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .project-card:nth-child(1) { grid-column: span 7; }
+  .project-card:nth-child(2) { grid-column: span 5; }
+  .project-card:nth-child(3) { grid-column: span 4; }
+  .project-card:nth-child(4) { grid-column: span 8; }
+  .project-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: transparent;
+    transition: background 0.3s;
+  }
+  .project-card:hover { border-color: rgba(200,240,89,0.25); transform: translateY(-4px); }
+  .project-card:hover::after { background: var(--accent); }
+  .project-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 0.1em;
+  }
+  .project-title {
+    font-family: var(--font-head);
+    font-size: 1.75rem;
+    line-height: 1.1;
+  }
+  .project-desc {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .project-tags {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem;
+    background: rgba(200,240,89,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(200,240,89,0.2);
+  }
+  .tag.purple { background: rgba(123,92,255,0.1); color: #a98fff; border-color: rgba(123,92,255,0.25); }
+  .tag.pink { background: rgba(255,92,123,0.1); color: #ff8fa6; border-color: rgba(255,92,123,0.25); }
+  .project-link {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink2);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+    margin-top: auto;
+    width: fit-content;
+  }
+  .project-link:hover { color: var(--accent); }
+  .project-link::after { content: '→'; }
+
+  /* EXPERIENCE */
+  .experience-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.2s;
+  }
+  .exp-item:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+  .exp-date {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink3);
+    padding-top: 4px;
+  }
+  .exp-right { }
+  .exp-role {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .exp-company {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+  .exp-desc {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.7;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-text p {
+    font-size: 15px;
+    color: var(--ink2);
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+  }
+  .about-text p strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .about-visual {
+    position: relative;
+    height: 400px;
+  }
+  .about-code-block {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    line-height: 2;
+    position: absolute;
+    top: 0; left: 0; right: 0;
+  }
+  .about-code-block .c-key { color: var(--accent2); }
+  .about-code-block .c-str { color: var(--accent); }
+  .about-code-block .c-num { color: var(--accent3); }
+  .about-code-block .c-comment { color: var(--ink3); }
+  .about-stats {
+    position: absolute;
+    bottom: 0; right: 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 60%;
+  }
+  .stat-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+  }
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 7rem 4rem;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+  }
+  .contact-inner {
+    max-width: 700px;
+  }
+  .contact-email {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ink);
+    display: block;
+    margin: 2rem 0;
+    text-decoration: none;
+    transition: -webkit-text-stroke-color 0.3s, color 0.3s;
+  }
+  .contact-email:hover {
+    color: var(--accent);
+    -webkit-text-stroke-color: var(--accent);
+  }
+  .contact-links {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    margin-top: 2.5rem;
+  }
+  .contact-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink2);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+  }
+  .contact-link:hover { color: var(--accent); }
+  .contact-link svg { width: 14px; height: 14px; }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink3);
+    letter-spacing: 0.1em;
+  }
+  .footer-back {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink3);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .footer-back:hover { color: var(--accent); }
+
+  /* FADE IN ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-up:nth-child(2) { transition-delay: 0.1s; }
+  .fade-up:nth-child(3) { transition-delay: 0.2s; }
+  .fade-up:nth-child(4) { transition-delay: 0.3s; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, .section, .contact-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+    h1.hero-name { font-size: 3.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card:nth-child(n) { grid-column: span 1; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-visual { height: auto; }
+    .about-stats { position: relative; width: 100%; margin-top: 1rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">./portfolio.js</div>
+  <ul class="nav-links">
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#about">À propos</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Développeur Fullstack — Nantes, France</div>
+    <h1 class="hero-name">
+      David <em>Basset</em>
+    </h1>
+    <div class="hero-roles">
+      <span class="hero-typing" id="typing-text">Vue.js</span>
+      <span class="sep">/</span>
+      <span>React</span>
+      <span class="sep">/</span>
+      <span>Node.js</span>
+      <span class="sep">/</span>
+      <span>TypeScript</span>
+    </div>
+    <p style="font-size:15px; color:var(--ink2); max-width:520px; line-height:1.8;">
+      Spécialiste Vue.js &amp; Node.js, je crée des applications web et mobiles modernes, performantes et scalables.
+    </p>
+  </div>
+  <div class="hero-scroll">
+    <div class="line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="section" id="stack">
+  <div class="section-label">Technologies</div>
+  <h2 class="section-title">Mon <em>stack</em></h2>
+  <div class="stack-grid">
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🟢</span>
+      <div class="stack-name">Vue.js</div>
+      <div class="stack-level">Expert</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:97%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">⚛️</span>
+      <div class="stack-name">React / Next.js</div>
+      <div class="stack-level">Expert</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:92%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🔷</span>
+      <div class="stack-name">TypeScript</div>
+      <div class="stack-level">Expert</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:94%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">⚡</span>
+      <div class="stack-name">JavaScript</div>
+      <div class="stack-level">Expert</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:96%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🔗</span>
+      <div class="stack-name">Node.js / Nest.js</div>
+      <div class="stack-level">Expert</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:91%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🎨</span>
+      <div class="stack-name">Tailwind CSS</div>
+      <div class="stack-level">Expert</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:93%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🗄️</span>
+      <div class="stack-name">MongoDB / PostgreSQL</div>
+      <div class="stack-level">Avancé</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:82%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🔥</span>
+      <div class="stack-name">Firebase / Supabase</div>
+      <div class="stack-level">Avancé</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:85%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🎯</span>
+      <div class="stack-name">Microservices / DDD</div>
+      <div class="stack-level">Avancé</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:83%"></div></div>
+    </div>
+    <div class="stack-card fade-up">
+      <span class="stack-icon">🐰</span>
+      <div class="stack-name">RabbitMQ</div>
+      <div class="stack-level">Avancé</div>
+      <div class="stack-bar"><div class="stack-bar-fill" style="width:78%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="projects" style="background: var(--bg2);">
+  <div class="section-label">Réalisations</div>
+  <h2 class="section-title">Mes <em>projets</em></h2>
+  <div class="projects-grid">
+
+    <div class="project-card fade-up">
+      <div class="project-num">01 — Featured</div>
+      <div class="project-title">App mobile Shopopop</div>
+      <p class="project-desc">Backend Node.js d'une app de livraison collaborative utilisée dans 6 pays. Architecture microservices (paiement, KYC, communication), migration Mangopay → Stripe, refactoring complet de l'auth via Keycloak (2FA) et développement d'un serveur MCP couplé à un agent IA.</p>
+      <div class="project-tags">
+        <span class="tag">Node.js</span>
+        <span class="tag">Microservices</span>
+        <span class="tag purple">Stripe</span>
+        <span class="tag purple">Keycloak</span>
+        <span class="tag purple">RabbitMQ</span>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="project-link">GitHub</a>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">02</div>
+      <div class="project-title">Simulateur budgétaire BPCE</div>
+      <p class="project-desc">Transformation d'un outil Excel critique (20 onglets, règles métier complexes) en application web scalable pour TIBCO / BPCE. Migration Vue 2 → Vue 3 + Composition API, Webpack → Vite, TypeScript, Pinia.</p>
+      <div class="project-tags">
+        <span class="tag">Vue 3</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Vite</span>
+        <span class="tag pink">Pinia</span>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="project-link">GitHub</a>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">03</div>
+      <div class="project-title">Tunnel de commande OVHcloud</div>
+      <p class="project-desc">Développement et migration de composants au sein de l'équipe "Order" (6 devs). Tests unitaires Jest + Puppeteer, analyse qualité SonarQube, pipelines CDS.</p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag purple">Jest</span>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="project-link">GitHub</a>
+    </div>
+
+    <div class="project-card fade-up">
+      <div class="project-num">04</div>
+      <div class="project-title">Plateforme cybersécurité Xrator</div>
+      <p class="project-desc">Conception et développement du MVP from scratch en tant que premier salarié. Automatisation de l'évaluation de conformité, APIs REST sécurisées, participation au recrutement et à la mise en place des process agiles.</p>
+      <div class="project-tags">
+        <span class="tag">Vue 3</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Node.js</span>
+        <span class="tag pink">Jest</span>
+        <span class="tag pink">Cybersécurité</span>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="project-link">GitHub</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experience">
+  <div class="section-label">Parcours</div>
+  <h2 class="section-title"><em>Expérience</em></h2>
+  <div class="experience-list">
+    <div class="exp-item fade-up">
+      <div class="exp-date">Juil. 2025 — Présent</div>
+      <div class="exp-right">
+        <div class="exp-role">Développeur Fullstack — Back-end Node.js</div>
+        <div class="exp-company">Shopopop — Nantes</div>
+        <p class="exp-desc">Intégré à l'équipe Mobile (2 devs back-end, 4 iOS/Android), en charge des évolutions serveur de l'app de livraison collaborative. Architecture microservices (paiement Stripe, KYC Onfido, communication Braze/Segment). Migration Mangopay → Stripe, refactoring auth Keycloak (2FA), implémentation live motion KYC, et développement d'un serveur MCP pour lier le SI à un agent IA.</p>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-date">Juil. 2024 — Juil. 2025</div>
+      <div class="exp-right">
+        <div class="exp-role">Développeur Front-end</div>
+        <div class="exp-company">TIBCO — Saint-Aignan-Grandlieu</div>
+        <p class="exp-desc">Transformation d'un simulateur budgétaire Excel critique (20 onglets, règles métier BPCE) en application web Vue.js moderne. Rétro-engineering des formules, migration Vue 2 → Vue 3 + Composition API, Webpack → Vite, intégration TypeScript + Pinia.</p>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-date">Fév. 2023 — Juil. 2024</div>
+      <div class="exp-right">
+        <div class="exp-role">Développeur Front-end</div>
+        <div class="exp-company">OVHcloud</div>
+        <p class="exp-desc">Au sein de l'équipe "Order" (6 devs), développement et migration de composants du tunnel de commande. Configurateurs de produits, tests unitaires Jest + Puppeteer, analyse qualité SonarQube, déploiement via pipelines CDS.</p>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-date">Oct. 2022 — Juil. 2024</div>
+      <div class="exp-right">
+        <div class="exp-role">Développeur Fullstack</div>
+        <div class="exp-company">KANOMA — Nantes</div>
+        <p class="exp-desc">Développement d'une interface de suivi des missions commerciales avec tableau de bord analytique, mur social d'entreprise et automatisation des processus RH/admin. React.js, Nest.js, MongoDB, Firebase.</p>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-date">Août 2021 — Oct. 2022</div>
+      <div class="exp-right">
+        <div class="exp-role">Développeur Fullstack</div>
+        <div class="exp-company">XRATOR — France</div>
+        <p class="exp-desc">Premier salarié d'une startup cybersécurité en early stage. Conception et livraison du MVP de A à Z, APIs REST sécurisées, tests Jest, mise en place des process agiles et participation active au recrutement. Vue 3, TypeScript, Node.js.</p>
+      </div>
+    </div>
+    <div class="exp-item fade-up">
+      <div class="exp-date">Août 2020 — Nov. 2021</div>
+      <div class="exp-right">
+        <div class="exp-role">Développeur Fullstack</div>
+        <div class="exp-company">EPYO — Nantes</div>
+        <p class="exp-desc">En charge de l'intégralité du produit au sein d'une équipe de 2. APIs REST, application de tracking vidéo via l'API Milestone, système de livraison temps réel par technologie beacon. Livraison incluant déploiement hardware chez le client.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about" style="background: var(--bg2);">
+  <div class="section-label">À propos</div>
+  <h2 class="section-title">Qui <em>suis-je ?</em></h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Développeur fullstack freelance basé à <strong>Nantes</strong>, spécialisé Vue.js, React et Node.js depuis plus de <strong>6 ans</strong>.</p>
+      <p>J'accompagne des équipes produit dans la conception et la livraison d'applications web et mobiles ambitieuses, souvent dans des <strong>contextes à forte contrainte de délais</strong>.</p>
+      <p>J'interviens sur du backend (Node.js, APIs, architecture microservices), du frontend (Vue.js, React) et sur des projets from scratch, refontes ou migrations critiques. Clients récents : <strong>Shopopop, OVHcloud, TIBCO, BPCE</strong>.</p>
+      <p style="color: var(--accent); font-family: var(--font-mono); font-size: 13px; margin-top: 2rem;">Disponible pour des missions freelance.</p>
+    </div>
+    <div class="about-visual">
+      <div class="about-code-block">
+<span class="c-key">const</span> dev = {<br>
+&nbsp;&nbsp;<span class="c-key">name</span>: <span class="c-str">"David Basset"</span>,<br>
+&nbsp;&nbsp;<span class="c-key">location</span>: <span class="c-str">"Nantes, France 🇫🇷"</span>,<br>
+&nbsp;&nbsp;<span class="c-key">stack</span>: [<span class="c-str">"Vue"</span>, <span class="c-str">"React"</span>, <span class="c-str">"Node"</span>],<br>
+&nbsp;&nbsp;<span class="c-key">experience</span>: <span class="c-num">6</span>,&nbsp;<span class="c-comment">// ans</span><br>
+&nbsp;&nbsp;<span class="c-key">status</span>: <span class="c-str">"freelance ✓"</span>,<br>
+&nbsp;&nbsp;<span class="c-key">github</span>: <span class="c-str">"davidbassetjs"</span><br>
+}
+      </div>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Ans d'expérience</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Entreprises clientes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Stacks maîtrisées</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Pays (Shopopop)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Travaillons <em>ensemble</em></h2>
+    <a href="mailto:hello@davidbasset.com" class="contact-email">hello@davidbasset.com</a>
+    <p style="font-size:14px; color:var(--ink2); line-height:1.7; max-width:480px;">
+      Disponible pour des missions freelance en Vue, React ou Node.js. Réponse sous 24h.
+    </p>
+    <div class="contact-links">
+      <a href="https://github.com/davidbassetjs" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.84 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/davidbasset" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45H17.1v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.77V9h3.22v1.56h.04c.45-.84 1.54-1.73 3.17-1.73 3.39 0 4.02 2.23 4.02 5.13v6.49zM5.34 7.43a1.87 1.87 0 1 1 0-3.74 1.87 1.87 0 0 1 0 3.74zm1.62 13.02H3.72V9h3.24v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.46C23.21 24 24 23.23 24 22.27V1.73C24 .77 23.21 0 22.23 0z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://www.malt.fr/profile/davidbassetdeveloppeurfullstacknodejs" class="contact-link">Malt</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2025 David Basset — Développeur freelance Vue | Node | React — Nantes, France</div>
+  <a href="#home" class="footer-back">↑ Haut de page</a>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button, .stack-card, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width = '56px'; ring.style.height = '56px'; ring.style.opacity = '0.8'; });
+    el.addEventListener('mouseleave', () => { ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5'; });
+  });
+
+  // Typing animation
+  const words = ['JavaScript', 'TypeScript', 'Vue.js', 'React', 'Node.js', 'Full-Stack'];
+  let wi = 0, ci = 0, del = false;
+  const el = document.getElementById('typing-text');
+  function type() {
+    const w = words[wi];
+    if (!del) {
+      el.textContent = w.slice(0, ++ci);
+      if (ci === w.length) { del = true; setTimeout(type, 1800); return; }
+    } else {
+      el.textContent = w.slice(0, --ci);
+      if (ci === 0) { del = false; wi = (wi + 1) % words.length; }
+    }
+    setTimeout(type, del ? 60 : 90);
+  }
+  type();
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
