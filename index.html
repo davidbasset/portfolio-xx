@@ -97,7 +97,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .vp-text{font-family:var(--S);font-size:12px;color:var(--mid);line-height:1.9}
 
 /* ABOUT */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem}
+.about-grid{display:grid;grid-template-columns:240px 1fr;gap:4rem;align-items:start}
+.about-photo{width:100%;display:block}
+.about-content{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
 .about-quote{font-family:var(--F);font-size:clamp(1.6rem,2.5vw,2.4rem);font-weight:300;font-style:italic;line-height:1.4;color:var(--white);border-left:2px solid var(--yellow);padding-left:2rem}
 .about-quote strong{font-weight:700;font-style:normal;color:var(--yellow)}
 .about-body{display:flex;flex-direction:column;gap:1.25rem}
@@ -126,6 +128,10 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
 .reveal.in{opacity:1;transform:none}
 
 /* RESPONSIVE */
+@media(max-width:960px){
+  .about-grid{gap:2.5rem}
+  .about-content{grid-template-columns:1fr}
+}
 @media(max-width:768px){
   nav{padding:1rem 1.25rem}
   .hero{padding:6rem 1.25rem 1.5rem}
@@ -140,7 +146,9 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
   .skill-col{border-right:none;border-bottom:1px solid var(--border);padding:1.5rem 0}
   .vp-grid{grid-template-columns:1fr}
   .vp-card{border-right:none;border-bottom:1px solid var(--border);padding:2rem 0}
-  .about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .about-grid{grid-template-columns:1fr;gap:2rem}
+  .about-photo{max-width:200px;margin:0 auto}
+  .about-content{grid-template-columns:1fr}
   .exp-row{grid-template-columns:1fr;gap:0.75rem}
   .contact-section{padding:3rem 1.25rem 2rem}
   .contact-footer{flex-direction:column;align-items:flex-start;gap:1.5rem}
@@ -363,14 +371,17 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
     <div class="section-title">Qui suis-je</div>
   </div>
   <div class="about-grid">
-    <div class="about-quote reveal">
-      J'accompagne des équipes produit dans la conception et la livraison d'applications <strong>ambitieuses</strong> — souvent dans des contextes à forte contrainte de délais.
-    </div>
-    <div class="about-body reveal">
-      <p>Développeur fullstack freelance basé à <b>Nantes</b>, spécialisé Vue.js, React et Node.js depuis plus de <b>6 ans</b>.</p>
-      <p>J'interviens sur du <b>backend</b> (Node.js, APIs, architecture microservices), du <b>frontend</b> (Vue.js, React, interfaces performantes) et sur des projets from scratch, refontes ou migrations critiques.</p>
-      <p>Clients récents : <b>Shopopop, OVHcloud, TIBCO / BPCE, Xrator</b>.</p>
-      <p style="color:var(--yellow);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.5rem">→ Disponible pour de nouvelles missions</p>
+    <img src="655ffa02-bfee-407c-9827-12f1539378ef.jpeg" alt="David Basset" class="about-photo reveal">
+    <div class="about-content">
+      <div class="about-quote reveal">
+        J'accompagne des équipes produit dans la conception et la livraison d'applications <strong>ambitieuses</strong> — souvent dans des contextes à forte contrainte de délais.
+      </div>
+      <div class="about-body reveal">
+        <p>Développeur fullstack freelance basé à <b>Nantes</b>, spécialisé Vue.js, React et Node.js depuis plus de <b>6 ans</b>.</p>
+        <p>J'interviens sur du <b>backend</b> (Node.js, APIs, architecture microservices), du <b>frontend</b> (Vue.js, React, interfaces performantes) et sur des projets from scratch, refontes ou migrations critiques.</p>
+        <p>Clients récents : <b>Shopopop, OVHcloud, TIBCO / BPCE, Xrator</b>.</p>
+        <p style="color:var(--yellow);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.5rem">→ Disponible pour de nouvelles missions</p>
+      </div>
     </div>
   </div>
 </section>
