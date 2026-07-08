@@ -22,6 +22,10 @@
   --S:'IBM Plex Mono',monospace;
 }
 html{scroll-behavior:smooth}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
 body{background:var(--paper);color:var(--ink);font-family:var(--H);font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
 ::selection{background:var(--accent);color:var(--paper)}
 ::-webkit-scrollbar{width:4px}
@@ -45,7 +49,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(244,238,227,
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.7)}}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9rem 0 3rem}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9rem 0 3rem;position:relative;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;transition:opacity 0.3s linear}
+.hero .wrap{position:relative;z-index:1}
 .hero-meta{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--border);padding-bottom:1.25rem;margin-bottom:3rem}
 .hero-meta .name{font-family:var(--H);font-weight:500;font-size:1.15rem}
 .hero-meta .since{font-family:var(--S);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid)}
@@ -200,6 +206,7 @@ footer{background:var(--ink);padding:1.75rem 0;border-top:1px solid rgba(244,238
 </nav>
 
 <section class="hero" id="home">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
   <div class="wrap">
     <div class="hero-meta">
       <span class="name">David Basset</span>
@@ -521,6 +528,113 @@ footer{background:var(--ink);padding:1.75rem 0;border-top:1px solid rgba(244,238
   document.querySelectorAll('.project-row, .exp-row').forEach((el, i) => {
     el.style.transitionDelay = (i % 4 * 0.07) + 's';
   });
+</script>
+
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+  import Lenis from 'https://unpkg.com/lenis@1.1.13/dist/lenis.mjs';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Smooth momentum scroll (the global feel) ---------- */
+  if (!reduce) {
+    const lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.95, smoothWheel: true });
+    const rafLenis = (time) => { lenis.raf(time); requestAnimationFrame(rafLenis); };
+    requestAnimationFrame(rafLenis);
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const el = document.querySelector(a.getAttribute('href'));
+        if (el) { e.preventDefault(); lenis.scrollTo(el, { offset: -10 }); }
+      });
+    });
+  }
+
+  /* ---------- Hero WebGL centrepiece ---------- */
+  const canvas = document.getElementById('hero-canvas');
+  const hero = document.getElementById('home');
+  const heroPhoto = document.querySelector('.hero-photo');
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.z = 7;
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const knot = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(2, 0.42, 170, 22),
+    new THREE.MeshBasicMaterial({ color: 0xc0532f, wireframe: true, transparent: true, opacity: 0.30 })
+  );
+  group.add(knot);
+
+  const shell = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(3.4, 1),
+    new THREE.MeshBasicMaterial({ color: 0x26221c, wireframe: true, transparent: true, opacity: 0.09 })
+  );
+  group.add(shell);
+
+  const N = 550;
+  const pos = new Float32Array(N * 3);
+  for (let i = 0; i < N * 3; i++) pos[i] = (Math.random() - 0.5) * 16;
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  const points = new THREE.Points(
+    pGeo,
+    new THREE.PointsMaterial({ color: 0xc0532f, size: 0.045, transparent: true, opacity: 0.5, sizeAttenuation: true })
+  );
+  scene.add(points);
+
+  const mouse = { x: 0, y: 0 };
+  const target = { x: 0, y: 0 };
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+  });
+
+  let scrollY = window.scrollY || 0;
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+  function resize() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (!w || !h) return;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function frame() {
+    t += 0.005;
+    target.x += (mouse.x - target.x) * 0.05;
+    target.y += (mouse.y - target.y) * 0.05;
+    const s = scrollY * 0.0012;
+
+    group.rotation.y = t + target.x * 0.6;
+    group.rotation.x = target.y * 0.4 + s * 0.5;
+    group.position.y = -s * 1.2;
+    knot.rotation.z = t * 0.6;
+    shell.rotation.y = -t * 0.4;
+    points.rotation.y = t * 0.3;
+
+    canvas.style.opacity = Math.max(0, 1 - scrollY / 700);
+    if (heroPhoto) heroPhoto.style.transform = `translateY(${scrollY * 0.06}px)`;
+    renderer.render(scene, camera);
+  }
+
+  let running = false;
+  function loop() { if (!running) return; frame(); requestAnimationFrame(loop); }
+
+  new IntersectionObserver(([e]) => {
+    running = e.isIntersecting && !reduce;
+    if (running) loop();
+  }, { threshold: 0 }).observe(hero);
+
+  resize();
+  frame(); // one static frame (covers reduced-motion too)
 </script>
 </body>
 </html>
