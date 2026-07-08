@@ -1,408 +1,516 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>David Basset — Développeur Vue · Node · React</title>
+<title>David Basset — Senior Forward Deployed Engineer · AI · Fullstack</title>
+<meta name="description" content="David Basset — Forward Deployed Engineer &amp; AI Product Engineer. I turn ambitious ideas into production-ready AI products, intelligent automations and scalable software in weeks, not months. Nantes, France · Remote.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Fraunces:ital,wght@0,300;0,700;1,300;1,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --black:#0a0904;
-  --white:#f2ede4;
-  --yellow:#d4f100;
-  --mid:#7a7467;
-  --border:rgba(242,237,228,0.12);
-  --H:'Bebas Neue',sans-serif;
+  --paper:#f4eee3;
+  --paper-2:#ece4d5;
+  --ink:#26221c;
+  --accent:#c0532f;
+  --mid:#8c8072;
+  --border:rgba(38,34,28,0.14);
+  --H:'Fraunces',serif;
   --S:'IBM Plex Mono',monospace;
-  --F:'Fraunces',serif;
 }
 html{scroll-behavior:smooth}
-body{background:var(--black);color:var(--white);font-family:var(--S);overflow-x:hidden;cursor:crosshair}
-::selection{background:var(--yellow);color:var(--black)}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--black)}
-::-webkit-scrollbar-thumb{background:var(--yellow)}
+body{background:var(--paper);color:var(--ink);font-family:var(--H);font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
+::selection{background:var(--accent);color:var(--paper)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--paper)}
+::-webkit-scrollbar-thumb{background:var(--accent)}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 2.5rem}
+
+/* eyebrow / labels */
+.eyebrow{font-family:var(--S);font-size:11px;font-weight:400;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2.5rem;mix-blend-mode:difference}
-.nav-mark{font-family:var(--H);font-size:1.1rem;letter-spacing:0.08em;color:var(--white)}
-.nav-status{font-family:var(--S);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);display:flex;align-items:center;gap:0.5rem}
-.nav-status::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:pulse 1.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(244,238,227,0.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:1.1rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.nav-mark{font-family:var(--H);font-weight:600;font-size:1.15rem;letter-spacing:0.01em}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-family:var(--S);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--accent)}
+.nav-status{font-family:var(--S);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);display:flex;align-items:center;gap:0.5rem}
+.nav-status::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.7)}}
 
 /* HERO */
-.hero{min-height:100vh;display:grid;grid-template-rows:1fr auto;padding:7rem 2.5rem 2rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
-.hero-top{display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem}
-.hero-name{font-family:var(--H);font-size:clamp(5rem,17vw,18rem);line-height:0.88;letter-spacing:-0.01em;display:block}
-.hero-name .line2{display:block;-webkit-text-stroke:1.5px var(--white);color:transparent;margin-left:clamp(2rem,6vw,8rem)}
-.hero-sidebar{display:flex;flex-direction:column;justify-content:flex-end;gap:2rem;padding-bottom:0.5rem;min-width:180px;text-align:right}
-.hero-tag{font-family:var(--S);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--mid);writing-mode:vertical-rl;transform:rotate(180deg);align-self:flex-end;height:120px}
-.hero-year{font-family:var(--H);font-size:5rem;color:var(--border);line-height:1}
-.hero-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border-top:1px solid var(--border);padding-top:1.5rem;margin-top:2rem}
-.hero-stat{padding:0 2rem 0 0;border-right:1px solid var(--border)}
-.hero-stat:last-child{border-right:none;padding-left:2rem;padding-right:0}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:9rem 0 3rem}
+.hero-meta{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--border);padding-bottom:1.25rem;margin-bottom:3rem}
+.hero-meta .name{font-family:var(--H);font-weight:500;font-size:1.15rem}
+.hero-meta .since{font-family:var(--S);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid)}
+.hero-grid{display:grid;grid-template-columns:1.55fr 0.85fr;gap:3.5rem;align-items:center;margin-bottom:4.5rem}
+.hero-photo{position:relative}
+.hero-photo img{width:100%;display:block;border-radius:3px;aspect-ratio:4/5;object-fit:cover;filter:grayscale(0.12)}
+.hero-photo::after{content:'';position:absolute;inset:0;border-radius:3px;box-shadow:inset 0 0 0 1px var(--border);pointer-events:none}
+.hero-title{font-family:var(--H);font-weight:600;font-size:clamp(2.8rem,6vw,6rem);line-height:0.98;letter-spacing:-0.02em;margin-bottom:1.75rem}
+.hero-title em{font-style:italic;font-weight:300;color:var(--accent)}
+.hero-lead{font-family:var(--H);font-weight:300;font-size:clamp(1.15rem,1.9vw,1.6rem);line-height:1.45;max-width:620px;color:var(--ink);margin-bottom:2.5rem}
+.hero-cta{display:flex;flex-wrap:wrap;gap:2rem}
+.hero-cta a{font-family:var(--S);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:0.35rem;transition:color 0.2s,border-color 0.2s}
+.hero-cta a:hover{color:var(--accent);border-color:var(--accent)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:1.75rem}
+.hero-stat{border-right:1px solid var(--border);padding-right:2rem}
+.hero-stat:last-child{border-right:none;padding-left:2rem}
 .hero-stat:nth-child(2){padding-left:2rem}
-.hero-stat-num{font-family:var(--H);font-size:3rem;color:var(--yellow);line-height:1;margin-bottom:0.25rem}
-.hero-stat-label{font-family:var(--S);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid)}
-.hero-scroll-hint{position:absolute;bottom:2rem;right:2.5rem;font-family:var(--S);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid);display:flex;align-items:center;gap:1rem}
-.hero-scroll-hint::before{content:'';display:block;width:40px;height:1px;background:var(--mid)}
+.hero-stat-num{font-family:var(--H);font-weight:500;font-size:2.75rem;line-height:1;color:var(--accent);margin-bottom:0.4rem}
+.hero-stat-label{font-family:var(--S);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid)}
 
 /* MARQUEE */
-.marquee-wrap{overflow:hidden;border-bottom:1px solid var(--border);background:var(--yellow);padding:0.75rem 0}
-.marquee-track{display:flex;gap:0;white-space:nowrap;animation:marquee 20s linear infinite}
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--paper-2);padding:0.85rem 0}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 32s linear infinite}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.marquee-item{font-family:var(--H);font-size:1.1rem;letter-spacing:0.12em;color:var(--black);padding:0 2rem;display:inline-flex;align-items:center;gap:2rem}
-.marquee-item::after{content:'✦';font-size:0.6rem;opacity:0.5}
+.marquee-item{font-family:var(--S);font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink);padding:0 1.75rem;display:inline-flex;align-items:center;gap:1.75rem}
+.marquee-item::after{content:'✦';font-size:0.7rem;color:var(--accent)}
 
 /* SECTIONS */
-.section{padding:5rem 2.5rem;border-bottom:1px solid var(--border)}
-.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4rem;border-bottom:1px solid var(--border);padding-bottom:1rem}
-.section-num{font-family:var(--S);font-size:10px;letter-spacing:0.2em;color:var(--yellow);text-transform:uppercase}
-.section-title{font-family:var(--H);font-size:clamp(3rem,6vw,6rem);line-height:1;letter-spacing:0.02em}
+.section{padding:6rem 0;border-bottom:1px solid var(--border)}
+.section-head{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:4rem}
+.section-head .eyebrow{white-space:nowrap;transform:translateY(-0.15em)}
+.section-title{font-family:var(--H);font-weight:600;font-size:clamp(2.4rem,5vw,4.5rem);line-height:1;letter-spacing:-0.015em}
+.section-title em{font-style:italic;font-weight:300;color:var(--accent)}
 
 /* PROJECTS */
-.project-row{display:grid;grid-template-columns:80px 1fr auto;gap:2.5rem;align-items:start;padding:2.5rem 0;border-bottom:1px solid var(--border);position:relative;transition:background 0.2s}
-.project-row::before{content:'';position:absolute;left:-2.5rem;top:0;bottom:0;width:0;background:var(--yellow);transition:width 0.3s ease}
-.project-row:hover::before{width:3px}
-.project-row:hover .project-title-main{color:var(--yellow)}
-.p-num{font-family:var(--H);font-size:3rem;color:var(--border);line-height:1;padding-top:0.2rem}
-.project-title-main{font-family:var(--F);font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:700;line-height:1.1;margin-bottom:0.75rem;transition:color 0.2s}
-.project-title-main em{font-style:italic;font-weight:300}
-.p-desc{font-family:var(--S);font-size:12px;color:var(--mid);line-height:1.8;max-width:560px;margin-bottom:1rem}
-.p-tags{display:flex;flex-wrap:wrap;gap:0.4rem}
-.p-tag{font-family:var(--S);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.7rem;border:1px solid var(--border);color:var(--mid)}
-.p-tag.hot{border-color:var(--yellow);color:var(--yellow)}
-.p-link{font-family:var(--S);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);text-decoration:none;white-space:nowrap;padding-top:0.4rem;transition:color 0.2s;display:flex;align-items:center;gap:0.5rem}
-.p-link:hover{color:var(--yellow)}
+.project-row{display:grid;grid-template-columns:70px 1fr auto;gap:2.5rem;align-items:baseline;padding:2.5rem 0;border-top:1px solid var(--border);transition:padding-left 0.3s ease}
+.project-row:first-of-type{border-top:none}
+.project-row:hover{padding-left:0.75rem}
+.project-row:hover .project-title-main{color:var(--accent)}
+.p-num{font-family:var(--S);font-size:13px;letter-spacing:0.1em;color:var(--mid);padding-top:0.5rem}
+.project-title-main{font-family:var(--H);font-weight:600;font-size:clamp(1.5rem,2.6vw,2.3rem);line-height:1.1;letter-spacing:-0.01em;margin-bottom:0.85rem;transition:color 0.25s}
+.project-title-main em{font-style:italic;font-weight:300;color:var(--mid)}
+.p-desc{font-family:var(--H);font-weight:300;font-size:1rem;color:var(--ink);line-height:1.65;max-width:600px;margin-bottom:1.25rem;opacity:0.85}
+.p-tags{display:flex;flex-wrap:wrap;gap:0.45rem}
+.p-tag{font-family:var(--S);font-size:9.5px;letter-spacing:0.12em;text-transform:uppercase;padding:0.32rem 0.7rem;border:1px solid var(--border);color:var(--mid);border-radius:2px}
+.p-tag.hot{border-color:var(--accent);color:var(--accent)}
+.p-link{font-family:var(--S);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);text-decoration:none;white-space:nowrap;padding-top:0.5rem;transition:color 0.2s}
+.p-link:hover{color:var(--accent)}
 
 /* EXPERIENCE */
-.exp-row{display:grid;grid-template-columns:220px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--border)}
-.exp-period{font-family:var(--S);font-size:11px;letter-spacing:0.1em;color:var(--yellow);margin-bottom:0.5rem}
-.exp-co{font-family:var(--H);font-size:1.8rem;line-height:1;letter-spacing:0.05em;margin-bottom:0.25rem}
-.exp-type{font-family:var(--S);font-size:10px;color:var(--mid);letter-spacing:0.1em;text-transform:uppercase}
-.exp-role-title{font-family:var(--F);font-size:1.3rem;font-style:italic;font-weight:300;margin-bottom:0.75rem;color:var(--white)}
-.exp-detail{font-family:var(--S);font-size:12px;color:var(--mid);line-height:1.9}
-.exp-stack{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem}
-.exp-chip{font-family:var(--S);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.6rem;background:rgba(212,241,0,0.06);border:1px solid rgba(212,241,0,0.2);color:var(--yellow)}
+.exp-row{display:grid;grid-template-columns:240px 1fr;gap:3rem;padding:2.5rem 0;border-top:1px solid var(--border)}
+.exp-row:first-of-type{border-top:none}
+.exp-period{font-family:var(--S);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:0.65rem}
+.exp-co{font-family:var(--H);font-weight:600;font-size:1.5rem;line-height:1.05;letter-spacing:-0.01em;margin-bottom:0.2rem}
+.exp-type{font-family:var(--S);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid)}
+.exp-role-title{font-family:var(--H);font-style:italic;font-weight:400;font-size:1.35rem;margin-bottom:0.75rem}
+.exp-detail{font-family:var(--H);font-weight:300;font-size:0.98rem;color:var(--ink);line-height:1.75;opacity:0.85;max-width:640px}
+.exp-stack{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:1.1rem}
+.exp-chip{font-family:var(--S);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:0.28rem 0.65rem;background:rgba(192,83,47,0.07);border:1px solid rgba(192,83,47,0.24);color:var(--accent);border-radius:2px}
 
-/* VALUE PROP */
+/* CAPABILITIES */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.skill-col{padding:0 2.75rem;border-right:1px solid var(--border)}
+.skill-col:first-child{padding-left:0}
+.skill-col:last-child{border-right:none;padding-right:0}
+.skill-col-title{font-family:var(--H);font-weight:600;font-size:1.5rem;letter-spacing:-0.01em;margin-bottom:1.75rem;display:flex;align-items:baseline;gap:0.7rem}
+.skill-col-title em{font-style:italic;font-weight:300;color:var(--accent)}
+.skill-col-num{font-family:var(--S);font-size:11px;color:var(--mid);letter-spacing:0.12em}
+.skill-list{list-style:none;display:flex;flex-direction:column;gap:1rem}
+.skill-list li{font-family:var(--H);font-weight:300;font-size:1.02rem;color:var(--ink);line-height:1.45;padding-left:1.5rem;position:relative}
+.skill-list li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+
+/* VALUE */
 .vp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.vp-card{padding:2.5rem;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:1.5rem;transition:background 0.2s}
-.vp-card:last-child{border-right:none}
-.vp-card:hover{background:rgba(212,241,0,0.03)}
-.vp-num{font-family:var(--H);font-size:4rem;color:var(--yellow);line-height:1;opacity:0.4}
-.vp-title{font-family:var(--F);font-size:1.2rem;font-weight:700;line-height:1.3;margin-bottom:0.75rem;color:var(--white)}
-.vp-text{font-family:var(--S);font-size:12px;color:var(--mid);line-height:1.9}
+.vp-card{padding:0 2.75rem;border-right:1px solid var(--border)}
+.vp-card:first-child{padding-left:0}
+.vp-card:last-child{border-right:none;padding-right:0}
+.vp-num{font-family:var(--H);font-style:italic;font-weight:300;font-size:3.5rem;line-height:1;color:var(--accent);margin-bottom:1.25rem;display:block}
+.vp-title{font-family:var(--H);font-weight:600;font-size:1.3rem;line-height:1.25;letter-spacing:-0.01em;margin-bottom:1rem}
+.vp-text{font-family:var(--H);font-weight:300;font-size:0.98rem;color:var(--ink);line-height:1.75;opacity:0.85}
 
 /* ABOUT */
-.about-grid{display:grid;grid-template-columns:240px 1fr;gap:4rem;align-items:start}
-.about-photo{width:100%;display:block}
-.about-content{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
-.about-quote{font-family:var(--F);font-size:clamp(1.6rem,2.5vw,2.4rem);font-weight:300;font-style:italic;line-height:1.4;color:var(--white);border-left:2px solid var(--yellow);padding-left:2rem}
-.about-quote strong{font-weight:700;font-style:normal;color:var(--yellow)}
-.about-body{display:flex;flex-direction:column;gap:1.25rem}
-.about-body p{font-family:var(--S);font-size:12px;color:var(--mid);line-height:1.9}
-.about-body p b{color:var(--white);font-weight:500}
+.about-content{display:flex;flex-direction:column;gap:2.75rem;max-width:980px}
+.about-quote{font-family:var(--H);font-weight:300;font-style:italic;font-size:clamp(1.5rem,2.8vw,2.5rem);line-height:1.4;border-left:2px solid var(--accent);padding-left:2rem}
+.about-quote strong{font-weight:600;font-style:normal;color:var(--accent)}
+.about-body{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem}
+.about-body p{font-family:var(--H);font-weight:300;font-size:1rem;color:var(--ink);line-height:1.75;opacity:0.9}
+.about-body p b{font-weight:600;opacity:1}
+.about-avail{font-family:var(--S)!important;font-size:11px!important;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent)!important;opacity:1!important}
 
 /* CONTACT */
-.contact-section{padding:6rem 2.5rem 4rem;background:var(--yellow)}
-.contact-pre{font-family:var(--S);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(0,0,0,0.4);margin-bottom:1.5rem}
-.contact-email{font-family:var(--H);font-size:clamp(2.5rem,7vw,7rem);color:var(--black);display:block;text-decoration:none;line-height:1;letter-spacing:-0.01em;transition:opacity 0.2s;word-break:break-all}
-.contact-email:hover{opacity:0.6}
-.contact-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:4rem;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.12)}
-.contact-links{display:flex;gap:2rem;flex-wrap:wrap}
-.contact-link{font-family:var(--S);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,0,0,0.5);text-decoration:none;transition:color 0.2s}
-.contact-link:hover{color:var(--black)}
-.contact-loc{font-family:var(--S);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,0,0,0.4)}
+.contact-section{background:var(--ink);color:var(--paper);padding:7rem 0 5rem}
+.contact-pre{font-family:var(--S);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem}
+.contact-email{font-family:var(--H);font-weight:500;font-size:clamp(2rem,6.5vw,6rem);color:var(--paper);display:inline-block;text-decoration:none;line-height:1;letter-spacing:-0.02em;transition:color 0.25s;word-break:break-word}
+.contact-email:hover{color:var(--accent)}
+.contact-footer{display:flex;justify-content:space-between;align-items:flex-end;margin-top:4.5rem;padding-top:2rem;border-top:1px solid rgba(244,238,227,0.16)}
+.contact-links{display:flex;gap:2.25rem;flex-wrap:wrap}
+.contact-link{font-family:var(--S);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,238,227,0.6);text-decoration:none;transition:color 0.2s}
+.contact-link:hover{color:var(--accent)}
+.contact-loc{font-family:var(--S);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,238,227,0.45)}
 
 /* FOOTER */
-footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
-.footer-copy{font-family:var(--S);font-size:10px;letter-spacing:0.1em;color:var(--mid)}
-.footer-back{font-family:var(--S);font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color 0.2s}
-.footer-back:hover{color:var(--yellow)}
+footer{background:var(--ink);padding:1.75rem 0;border-top:1px solid rgba(244,238,227,0.16)}
+.footer-inner{max-width:1180px;margin:0 auto;padding:0 2.5rem;display:flex;justify-content:space-between;align-items:center}
+.footer-copy{font-family:var(--S);font-size:10px;letter-spacing:0.1em;color:rgba(244,238,227,0.4)}
+.footer-back{font-family:var(--S);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(244,238,227,0.55);text-decoration:none;transition:color 0.2s}
+.footer-back:hover{color:var(--accent)}
 
 /* REVEAL */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease}
 .reveal.in{opacity:1;transform:none}
 
 /* RESPONSIVE */
 @media(max-width:960px){
-  .about-grid{gap:2.5rem}
-  .about-content{grid-template-columns:1fr}
+  .hero-grid{grid-template-columns:1fr;gap:2.75rem}
+  .hero-photo{max-width:300px;order:-1}
+  .about-body{grid-template-columns:1fr}
 }
 @media(max-width:768px){
-  nav{padding:1rem 1.25rem}
-  .hero{padding:6rem 1.25rem 1.5rem}
-  .hero-top{grid-template-columns:1fr}
-  .hero-sidebar{display:none}
-  .hero-bottom{grid-template-columns:1fr 1fr}
-  .hero-stat:nth-child(3){grid-column:span 2;border-right:none;border-top:1px solid var(--border);padding-top:1rem;padding-left:0}
-  .section{padding:3rem 1.25rem}
-  .project-row{grid-template-columns:50px 1fr;gap:1rem}
+  .wrap,.nav-inner,.footer-inner{padding-left:1.35rem;padding-right:1.35rem}
+  .nav-links{display:none}
+  .hero{padding:7rem 0 2rem}
+  .hero-photo{max-width:220px}
+  .hero-stats{grid-template-columns:1fr 1fr}
+  .hero-stat:nth-child(3){grid-column:span 2;border-right:none;border-top:1px solid var(--border);padding-top:1.25rem;padding-left:0;margin-top:1.25rem}
+  .section{padding:3.5rem 0}
+  .section-head{flex-direction:column;gap:0.75rem;margin-bottom:2.5rem}
+  .project-row{grid-template-columns:36px 1fr;gap:1rem}
   .p-link{display:none}
-  .skills-grid{grid-template-columns:1fr}
-  .skill-col{border-right:none;border-bottom:1px solid var(--border);padding:1.5rem 0}
-  .vp-grid{grid-template-columns:1fr}
-  .vp-card{border-right:none;border-bottom:1px solid var(--border);padding:2rem 0}
-  .about-grid{grid-template-columns:1fr;gap:2rem}
-  .about-photo{max-width:200px;margin:0 auto}
-  .about-content{grid-template-columns:1fr}
-  .exp-row{grid-template-columns:1fr;gap:0.75rem}
-  .contact-section{padding:3rem 1.25rem 2rem}
-  .contact-footer{flex-direction:column;align-items:flex-start;gap:1.5rem}
-  footer{padding:1.25rem;flex-direction:column;gap:0.75rem;text-align:center}
+  .skills-grid,.vp-grid{grid-template-columns:1fr}
+  .skill-col,.vp-card{border-right:none;border-bottom:1px solid var(--border);padding:2rem 0}
+  .skill-col:first-child,.vp-card:first-child{padding-top:0}
+  .skill-col:last-child,.vp-card:last-child{border-bottom:none}
+  .exp-row{grid-template-columns:1fr;gap:1rem}
+  .footer-inner{flex-direction:column;gap:0.75rem;text-align:center}
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-mark">DB</div>
-  <div class="nav-status">Disponible — missions freelance</div>
+  <div class="nav-inner">
+    <div class="nav-mark">David Basset</div>
+    <div class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-status">Available</div>
+  </div>
 </nav>
 
 <section class="hero" id="home">
-  <div class="hero-top">
-    <div>
-      <span class="hero-name">
-        DAVID
-        <span class="line2">BASSET</span>
-      </span>
+  <div class="wrap">
+    <div class="hero-meta">
+      <span class="name">David Basset</span>
+      <span class="since">Freelance · Nantes · since 2020</span>
     </div>
-    <div class="hero-sidebar">
-      <div class="hero-tag">Développeur Vue · Node · React</div>
-      <div class="hero-year">2025</div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow" style="display:block;margin-bottom:1.35rem">Senior · AI &amp; Fullstack</span>
+        <h1 class="hero-title">Forward Deployed<br><em>Engineer.</em></h1>
+        <p class="hero-lead">I help startups and product teams turn ambitious ideas into production-ready
+          AI products, intelligent automations and scalable software — in weeks, not months.</p>
+        <div class="hero-cta">
+          <a href="#work">See selected work ↓</a>
+          <a href="#contact">Get in touch →</a>
+        </div>
+      </div>
+      <div class="hero-photo reveal">
+        <img src="655ffa02-bfee-407c-9827-12f1539378ef.jpeg" alt="David Basset — Forward Deployed Engineer">
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">7+</div>
+        <div class="hero-stat-label">Years of experience</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">6</div>
+        <div class="hero-stat-label">Client companies</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">FR</div>
+        <div class="hero-stat-label">Nantes · Remote OK</div>
+      </div>
     </div>
   </div>
-  <div class="hero-bottom">
-    <div class="hero-stat">
-      <div class="hero-stat-num">6+</div>
-      <div class="hero-stat-label">Ans d'expérience</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">6</div>
-      <div class="hero-stat-label">Entreprises clientes</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num">FR</div>
-      <div class="hero-stat-label">Nantes · Remote OK</div>
-    </div>
-  </div>
-  <div class="hero-scroll-hint">Scroll pour découvrir</div>
 </section>
 
 <div class="marquee-wrap" aria-hidden="true">
   <div class="marquee-track">
-    <span class="marquee-item">Vue.js</span><span class="marquee-item">Node.js</span><span class="marquee-item">React</span><span class="marquee-item">TypeScript</span><span class="marquee-item">Microservices</span><span class="marquee-item">API REST</span><span class="marquee-item">Freelance</span><span class="marquee-item">Nantes</span><span class="marquee-item">Vue.js</span><span class="marquee-item">Node.js</span><span class="marquee-item">React</span><span class="marquee-item">TypeScript</span><span class="marquee-item">Microservices</span><span class="marquee-item">API REST</span><span class="marquee-item">Freelance</span><span class="marquee-item">Nantes</span>
+    <span class="marquee-item">AI Agents</span><span class="marquee-item">LLM Orchestration</span><span class="marquee-item">MCP</span><span class="marquee-item">Node.js</span><span class="marquee-item">TypeScript</span><span class="marquee-item">Microservices</span><span class="marquee-item">Vue.js</span><span class="marquee-item">React</span><span class="marquee-item">MVP</span><span class="marquee-item">Automation</span><span class="marquee-item">AI Agents</span><span class="marquee-item">LLM Orchestration</span><span class="marquee-item">MCP</span><span class="marquee-item">Node.js</span><span class="marquee-item">TypeScript</span><span class="marquee-item">Microservices</span><span class="marquee-item">Vue.js</span><span class="marquee-item">React</span><span class="marquee-item">MVP</span><span class="marquee-item">Automation</span>
   </div>
 </div>
 
-<section class="section" id="projects">
-  <div class="section-header">
-    <div class="section-num">01 — Réalisations</div>
-    <div class="section-title">Projets</div>
-  </div>
-
-  <div class="project-row reveal">
-    <div class="p-num">01</div>
-    <div>
-      <div class="project-title-main">App mobile <em>Shopopop</em></div>
-      <p class="p-desc">Backend Node.js d'une app de livraison collaborative dans 6 pays. Architecture microservices (paiement, KYC, communication). Migration Mangopay → Stripe, refactoring auth Keycloak 2FA, serveur MCP couplé à un agent IA.</p>
-      <div class="p-tags"><span class="p-tag hot">Node.js</span><span class="p-tag hot">Microservices</span><span class="p-tag hot">Stripe</span><span class="p-tag">Keycloak</span><span class="p-tag">RabbitMQ</span><span class="p-tag">MCP / IA</span></div>
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">01 / Selected work</span>
+      <h2 class="section-title">Projects</h2>
     </div>
-    <a href="https://github.com/davidbassetjs" class="p-link">Github ↗</a>
-  </div>
 
-  <div class="project-row reveal">
-    <div class="p-num">02</div>
-    <div>
-      <div class="project-title-main">Simulateur budgétaire <em>BPCE × TIBCO</em></div>
-      <p class="p-desc">Transformation d'un outil Excel critique de 20 onglets en application web Vue.js scalable. Rétro-engineering des règles métier, migration Vue 2→3 + Composition API, Webpack→Vite, TypeScript + Pinia.</p>
-      <div class="p-tags"><span class="p-tag hot">Vue 3</span><span class="p-tag hot">TypeScript</span><span class="p-tag">Vite</span><span class="p-tag">Pinia</span><span class="p-tag">Composition API</span></div>
+    <div class="project-row reveal">
+      <div class="p-num">01</div>
+      <div>
+        <div class="project-title-main">Mobile backend &amp; internal AI <em>— Shopopop</em></div>
+        <p class="p-desc">Node.js microservices powering a crowdsourced delivery app used daily by thousands of users (payments, KYC, communication). Led the Mangopay → Stripe migration, re-architected auth with Keycloak &amp; 2FA, shipped biometric identity re-verification with liveness detection, and built an internal MCP server that lets AI agents and non-technical teams query internal APIs.</p>
+        <div class="p-tags"><span class="p-tag hot">Node.js</span><span class="p-tag hot">MCP / AI</span><span class="p-tag hot">Stripe</span><span class="p-tag">Keycloak</span><span class="p-tag">Onfido</span><span class="p-tag">Microservices</span></div>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="p-link">GitHub ↗</a>
     </div>
-    <a href="https://github.com/davidbassetjs" class="p-link">Github ↗</a>
-  </div>
 
-  <div class="project-row reveal">
-    <div class="p-num">03</div>
-    <div>
-      <div class="project-title-main">Tunnel de commande <em>OVHcloud</em></div>
-      <p class="p-desc">Développement et migration de composants au sein de l'équipe "Order" (6 devs). Configurateurs de produits, tests Jest + Puppeteer, analyse SonarQube, déploiement CDS.</p>
-      <div class="p-tags"><span class="p-tag hot">React</span><span class="p-tag hot">TypeScript</span><span class="p-tag">Jest</span><span class="p-tag">SonarQube</span></div>
+    <div class="project-row reveal">
+      <div class="p-num">02</div>
+      <div>
+        <div class="project-title-main">Budgeting simulator <em>— BPCE × TIBCO</em></div>
+        <p class="p-desc">Turned a critical 20-tab Excel tool into a scalable Vue.js web application. Reverse-engineered the business rules, built configurable calculation engines, and migrated Vue 2 → 3 (Composition API), Webpack → Vite, with TypeScript and Pinia.</p>
+        <div class="p-tags"><span class="p-tag hot">Vue 3</span><span class="p-tag hot">TypeScript</span><span class="p-tag">Vite</span><span class="p-tag">Pinia</span><span class="p-tag">Composition API</span></div>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="p-link">GitHub ↗</a>
     </div>
-    <a href="https://github.com/davidbassetjs" class="p-link">Github ↗</a>
-  </div>
 
-  <div class="project-row reveal">
-    <div class="p-num">04</div>
-    <div>
-      <div class="project-title-main">Plateforme cybersécurité <em>Xrator</em></div>
-      <p class="p-desc">1er salarié d'une startup cybersécurité. Conception et livraison du MVP from scratch — APIs REST sécurisées, évaluation de conformité automatisée, tests Jest, process agiles.</p>
-      <div class="p-tags"><span class="p-tag hot">Vue 3</span><span class="p-tag hot">Node.js</span><span class="p-tag">TypeScript</span><span class="p-tag">Jest</span><span class="p-tag">Cybersécurité</span></div>
+    <div class="project-row reveal">
+      <div class="p-num">03</div>
+      <div>
+        <div class="project-title-main">Order funnel <em>— OVHcloud</em></div>
+        <p class="p-desc">Built and modernized frontend components within the "Order" team (6 engineers). Product configurators and checkout journeys across multiple cloud offerings, with Jest + Puppeteer tests, SonarQube quality gates and CI/CD delivery.</p>
+        <div class="p-tags"><span class="p-tag hot">React</span><span class="p-tag hot">TypeScript</span><span class="p-tag">Jest</span><span class="p-tag">SonarQube</span></div>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="p-link">GitHub ↗</a>
     </div>
-    <a href="https://github.com/davidbassetjs" class="p-link">Github ↗</a>
+
+    <div class="project-row reveal">
+      <div class="p-num">04</div>
+      <div>
+        <div class="project-title-main">Cybersecurity platform <em>— Xrator</em></div>
+        <p class="p-desc">First employee of a cybersecurity startup. Designed and delivered the MVP from scratch — secure REST APIs, automated compliance assessment, Jest test strategy, agile processes and early engineering-team hiring.</p>
+        <div class="p-tags"><span class="p-tag hot">Vue 3</span><span class="p-tag hot">Node.js</span><span class="p-tag">TypeScript</span><span class="p-tag">Jest</span><span class="p-tag">Cybersecurity</span></div>
+      </div>
+      <a href="https://github.com/davidbassetjs" class="p-link">GitHub ↗</a>
+    </div>
   </div>
 </section>
 
 <section class="section" id="experience">
-  <div class="section-header">
-    <div class="section-num">02 — Parcours</div>
-    <div class="section-title">Expérience</div>
-  </div>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">02 / Career</span>
+      <h2 class="section-title">Experience</h2>
+    </div>
 
-  <div class="exp-row reveal">
-    <div>
-      <div class="exp-period">Juil. 2025 — Présent</div>
-      <div class="exp-co">SHOPOPOP</div>
-      <div class="exp-type">Freelance · Nantes</div>
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Jul 2024 — Present</div>
+        <div class="exp-co">Independent</div>
+        <div class="exp-type">Freelance · Remote</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Forward Deployed Engineer</div>
+        <div class="exp-detail">Partnering directly with product and business teams to turn ideas into production-ready AI applications, intelligent automations and scalable software. AI agents, Generative AI &amp; LLM orchestration, backend, APIs and enterprise integrations — shipping value in weeks, not months.</div>
+        <div class="exp-stack"><span class="exp-chip">AI Agents</span><span class="exp-chip">LLM</span><span class="exp-chip">MCP</span><span class="exp-chip">Node.js</span><span class="exp-chip">Python</span></div>
+      </div>
     </div>
-    <div>
-      <div class="exp-role-title">Développeur Fullstack — Back-end Node.js</div>
-      <div class="exp-detail">Architecture microservices de l'app mobile. Migration Mangopay → Stripe, refactoring auth Keycloak (2FA), KYC live motion, serveur MCP pour agent IA interne.</div>
-      <div class="exp-stack"><span class="exp-chip">Node.js</span><span class="exp-chip">Stripe</span><span class="exp-chip">Keycloak</span><span class="exp-chip">RabbitMQ</span><span class="exp-chip">MCP</span></div>
-    </div>
-  </div>
 
-  <div class="exp-row reveal">
-    <div>
-      <div class="exp-period">Juil. 2024 — Juil. 2025</div>
-      <div class="exp-co">TIBCO</div>
-      <div class="exp-type">Freelance · St-Aignan-Grandlieu</div>
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Jul 2025 — Present</div>
+        <div class="exp-co">Shopopop</div>
+        <div class="exp-type">Freelance · Nantes</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Senior Fullstack &amp; Forward Deployed Engineer</div>
+        <div class="exp-detail">Backend microservices for the mobile app. Mangopay → Stripe migration, Keycloak auth refactor (2FA), biometric identity re-verification with liveness detection, driver returns workflow, and an internal MCP server for AI agents and non-technical teams.</div>
+        <div class="exp-stack"><span class="exp-chip">Node.js</span><span class="exp-chip">Stripe</span><span class="exp-chip">Keycloak</span><span class="exp-chip">Onfido</span><span class="exp-chip">MCP</span></div>
+      </div>
     </div>
-    <div>
-      <div class="exp-role-title">Développeur Front-end</div>
-      <div class="exp-detail">Transformation d'un simulateur Excel BPCE en app Vue.js moderne. Migration Vue 2→3 + Composition API, Webpack→Vite, TypeScript + Pinia.</div>
-      <div class="exp-stack"><span class="exp-chip">Vue 3</span><span class="exp-chip">TypeScript</span><span class="exp-chip">Vite</span><span class="exp-chip">Pinia</span></div>
-    </div>
-  </div>
 
-  <div class="exp-row reveal">
-    <div>
-      <div class="exp-period">Fév. 2023 — Juil. 2024</div>
-      <div class="exp-co">OVHCLOUD</div>
-      <div class="exp-type">Freelance</div>
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Jul 2024 — Jul 2025</div>
+        <div class="exp-co">TIBCO</div>
+        <div class="exp-type">Freelance · St-Aignan-Grandlieu</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Senior Fullstack Engineer</div>
+        <div class="exp-detail">Transformed a BPCE Excel budgeting simulator into a modern Vue.js application. Vue 2 → 3 + Composition API, Webpack → Vite, TypeScript + Pinia, and highly configurable business rules.</div>
+        <div class="exp-stack"><span class="exp-chip">Vue 3</span><span class="exp-chip">TypeScript</span><span class="exp-chip">Vite</span><span class="exp-chip">Pinia</span></div>
+      </div>
     </div>
-    <div>
-      <div class="exp-role-title">Développeur Front-end</div>
-      <div class="exp-detail">Équipe "Order" — tunnel de commande, configurateurs produits, tests Jest + Puppeteer, SonarQube, pipelines CDS.</div>
-      <div class="exp-stack"><span class="exp-chip">React</span><span class="exp-chip">TypeScript</span><span class="exp-chip">Jest</span><span class="exp-chip">SonarQube</span></div>
-    </div>
-  </div>
 
-  <div class="exp-row reveal">
-    <div>
-      <div class="exp-period">Oct. 2022 — Juil. 2024</div>
-      <div class="exp-co">KANOMA</div>
-      <div class="exp-type">Freelance · Nantes</div>
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Feb 2023 — Jul 2024</div>
+        <div class="exp-co">OVHcloud</div>
+        <div class="exp-type">Freelance · Roubaix</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Frontend Web Developer</div>
+        <div class="exp-detail">"Order" team — ordering journey, product configurators, generic configuration framework, Jest + Puppeteer tests, SonarQube and CI/CD pipelines.</div>
+        <div class="exp-stack"><span class="exp-chip">React</span><span class="exp-chip">TypeScript</span><span class="exp-chip">Stencil</span><span class="exp-chip">SonarQube</span></div>
+      </div>
     </div>
-    <div>
-      <div class="exp-role-title">Développeur Fullstack</div>
-      <div class="exp-detail">Interface de suivi des missions commerciales, mur social d'entreprise, automatisation des process RH/admin.</div>
-      <div class="exp-stack"><span class="exp-chip">React</span><span class="exp-chip">Nest.js</span><span class="exp-chip">MongoDB</span><span class="exp-chip">Firebase</span></div>
-    </div>
-  </div>
 
-  <div class="exp-row reveal">
-    <div>
-      <div class="exp-period">Août 2021 — Oct. 2022</div>
-      <div class="exp-co">XRATOR</div>
-      <div class="exp-type">Salarié · France</div>
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Oct 2022 — Jul 2024</div>
+        <div class="exp-co">Kanoma</div>
+        <div class="exp-type">Freelance · Nantes</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Fullstack Engineer</div>
+        <div class="exp-detail">Mission management platform for sales teams, internal social platform, and automation of HR/admin processes — digitizing and centralizing key business workflows.</div>
+        <div class="exp-stack"><span class="exp-chip">React</span><span class="exp-chip">NestJS</span><span class="exp-chip">MongoDB</span><span class="exp-chip">Firebase</span></div>
+      </div>
     </div>
-    <div>
-      <div class="exp-role-title">Développeur Fullstack — 1er salarié</div>
-      <div class="exp-detail">MVP cybersécurité de A à Z. APIs REST sécurisées, conformité automatisée, tests Jest, process agiles, participation au recrutement.</div>
-      <div class="exp-stack"><span class="exp-chip">Vue 3</span><span class="exp-chip">TypeScript</span><span class="exp-chip">Node.js</span><span class="exp-chip">Jest</span></div>
-    </div>
-  </div>
 
-  <div class="exp-row reveal">
-    <div>
-      <div class="exp-period">Août 2020 — Nov. 2021</div>
-      <div class="exp-co">EPYO</div>
-      <div class="exp-type">Salarié · Nantes</div>
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Nov 2021 — Oct 2022</div>
+        <div class="exp-co">Xrator</div>
+        <div class="exp-type">Employee · France</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Fullstack Engineer — First hire</div>
+        <div class="exp-detail">Cybersecurity MVP from concept to production. Secure REST APIs, automated compliance assessment, Jest testing, agile processes and participation in early team hiring.</div>
+        <div class="exp-stack"><span class="exp-chip">Vue 3</span><span class="exp-chip">TypeScript</span><span class="exp-chip">Node.js</span><span class="exp-chip">Jest</span></div>
+      </div>
     </div>
-    <div>
-      <div class="exp-role-title">Développeur Fullstack</div>
-      <div class="exp-detail">Produit complet au sein d'une équipe de 2. APIs REST, tracking vidéo (API Milestone), système beacon temps réel, déploiement hardware client.</div>
-      <div class="exp-stack"><span class="exp-chip">Vue.js</span><span class="exp-chip">Node.js</span><span class="exp-chip">TypeScript</span></div>
+
+    <div class="exp-row reveal">
+      <div>
+        <div class="exp-period">Aug 2020 — Nov 2021</div>
+        <div class="exp-co">Epyo</div>
+        <div class="exp-type">Employee · Nantes</div>
+      </div>
+      <div>
+        <div class="exp-role-title">Fullstack Engineer</div>
+        <div class="exp-detail">Owned the full product lifecycle in a 2-person team. REST APIs, video stream processing (Milestone API), real-time beacon tracking and on-site hardware deployment for customers.</div>
+        <div class="exp-stack"><span class="exp-chip">Node.js</span><span class="exp-chip">IoT</span><span class="exp-chip">Video</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="valeur">
-  <div class="section-header">
-    <div class="section-num">03 — Proposition de valeur</div>
-    <div class="section-title">Ce que j'apporte</div>
+<section class="section" id="capabilities">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">03 / Stack</span>
+      <h2 class="section-title">Capabilities</h2>
+    </div>
+    <div class="skills-grid">
+
+      <div class="skill-col reveal">
+        <div class="skill-col-title"><span class="skill-col-num">A</span> AI &amp; <em>Automation</em></div>
+        <ul class="skill-list">
+          <li>AI agents &amp; multi-agent systems</li>
+          <li>Generative AI &amp; LLM orchestration</li>
+          <li>MCP server integrations</li>
+          <li>Workflow &amp; process automation</li>
+          <li>Spec-Driven Development (SDD)</li>
+          <li>AI-powered dev workflows</li>
+        </ul>
+      </div>
+
+      <div class="skill-col reveal">
+        <div class="skill-col-title"><span class="skill-col-num">B</span> Product &amp; <em>Backend</em></div>
+        <ul class="skill-list">
+          <li>Node.js / NestJS</li>
+          <li>Python</li>
+          <li>REST API design &amp; integration</li>
+          <li>Microservices &amp; event-driven systems</li>
+          <li>PostgreSQL / MongoDB</li>
+          <li>SaaS product development</li>
+        </ul>
+      </div>
+
+      <div class="skill-col reveal">
+        <div class="skill-col-title"><span class="skill-col-num">C</span> Frontend &amp; <em>Cloud</em></div>
+        <ul class="skill-list">
+          <li>React.js / Next.js</li>
+          <li>Vue.js / Nuxt</li>
+          <li>TypeScript / JavaScript</li>
+          <li>Tailwind CSS</li>
+          <li>Cloud architecture</li>
+          <li>CI/CD &amp; testing (Jest)</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
-  <div class="vp-grid">
+</section>
 
-    <div class="vp-card reveal">
-      <div class="vp-num">A</div>
-      <div class="vp-body">
-        <div class="vp-title">Du code livrable, pas du code démo</div>
-        <p class="vp-text">Je travaille directement sur des bases de code en production — migrations critiques, refactorisations à risque, contextes legacy. J'ai transformé un simulateur Excel de 20 onglets en app Vue.js, migré un système de paiement complet, refondu une auth de zéro. Le genre de chantiers qu'on n'abandonne pas à mi-chemin.</p>
-      </div>
+<section class="section" id="value">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">04 / Value</span>
+      <h2 class="section-title">What I <em>bring</em></h2>
     </div>
+    <div class="vp-grid">
 
-    <div class="vp-card reveal">
-      <div class="vp-num">B</div>
-      <div class="vp-body">
-        <div class="vp-title">Fullstack sans frontière artificielle</div>
-        <p class="vp-text">Je passe du composant Vue au microservice Node sans changer d'interlocuteur. Chez Shopopop j'interviens côté serveur sur des architectures distribuées. Chez TIBCO j'étais sur l'interface. Cette polyvalence réduit les frictions dans les petites équipes et les sprints tendus.</p>
+      <div class="vp-card reveal">
+        <span class="vp-num">A</span>
+        <div class="vp-title">Production-ready, not demos</div>
+        <p class="vp-text">I work directly on production codebases — critical migrations, risky refactors, legacy contexts. I turned a 20-tab Excel simulator into a Vue.js app, migrated a full payment platform to Stripe with zero disruption, and rebuilt an auth system from scratch. The kind of work you don't abandon halfway.</p>
       </div>
-    </div>
 
-    <div class="vp-card reveal">
-      <div class="vp-num">C</div>
-      <div class="vp-body">
-        <div class="vp-title">Freelance, mais pas solo dans sa tête</div>
-        <p class="vp-text">6 ans à m'intégrer dans des équipes produit — daily, code review, grooming, rédaction de specs JIRA. Je m'adapte aux process existants sans les ringardiser. Et quand c'est utile, je propose — mise en place de tests, refacto d'architecture, choix de stack.</p>
+      <div class="vp-card reveal">
+        <span class="vp-num">B</span>
+        <div class="vp-title">Forward Deployed Engineering</div>
+        <p class="vp-text">I partner directly with business and product teams, translating needs into AI-powered products and shipping end-to-end MVPs that plug into your existing infrastructure. Product thinking and hands-on engineering, from rapid prototype to production system.</p>
       </div>
-    </div>
 
+      <div class="vp-card reveal">
+        <span class="vp-num">C</span>
+        <div class="vp-title">Fullstack + AI, no boundary</div>
+        <p class="vp-text">From a Vue component to a Node microservice to LLM orchestration and MCP servers, without changing your point of contact. This versatility removes friction in small teams and tight sprints — and I help engineering teams adopt AI-powered delivery too.</p>
+      </div>
+
+    </div>
   </div>
 </section>
 
 <section class="section" id="about">
-  <div class="section-header">
-    <div class="section-num">04 — À propos</div>
-    <div class="section-title">Qui suis-je</div>
-  </div>
-  <div class="about-grid">
-    <img src="655ffa02-bfee-407c-9827-12f1539378ef.jpeg" alt="David Basset" class="about-photo reveal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">05 / About</span>
+      <h2 class="section-title">Who I <em>am</em></h2>
+    </div>
     <div class="about-content">
       <div class="about-quote reveal">
-        J'accompagne des équipes produit dans la conception et la livraison d'applications <strong>ambitieuses</strong> — souvent dans des contextes à forte contrainte de délais.
+        I help startups and product teams design and ship <strong>ambitious</strong> AI products and software — usually under tight deadlines.
       </div>
       <div class="about-body reveal">
-        <p>Développeur fullstack freelance basé à <b>Nantes</b>, spécialisé Vue.js, React et Node.js depuis plus de <b>6 ans</b>.</p>
-        <p>J'interviens sur du <b>backend</b> (Node.js, APIs, architecture microservices), du <b>frontend</b> (Vue.js, React, interfaces performantes) et sur des projets from scratch, refontes ou migrations critiques.</p>
-        <p>Clients récents : <b>Shopopop, OVHcloud, TIBCO / BPCE, Xrator</b>.</p>
-        <p style="color:var(--yellow);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.5rem">→ Disponible pour de nouvelles missions</p>
+        <p><b>Senior</b> Forward Deployed Engineer based in <b>Nantes</b>, with <b>7+ years</b> building and shipping ambitious digital products.</p>
+        <p>I work across <b>AI</b> (agents, LLM orchestration, MCP), <b>backend</b> (Node.js, APIs, microservices) and <b>frontend</b> (Vue.js, React) — on from-scratch builds, product MVPs and critical migrations.</p>
+        <p>Recent clients: <b>Shopopop, OVHcloud, TIBCO / BPCE, Xrator</b>.</p>
+        <p class="about-avail">→ Available for new missions</p>
       </div>
     </div>
   </div>
 </section>
 
 <section class="contact-section" id="contact">
-  <div class="contact-pre">05 — Contact</div>
-  <a href="mailto:hello@davidbasset.com" class="contact-email">hello@davidbasset.com</a>
-  <div class="contact-footer">
-    <div class="contact-links">
-      <a href="https://github.com/davidbassetjs" class="contact-link">GitHub</a>
-      <a href="https://www.linkedin.com/in/davidbasset" class="contact-link">LinkedIn</a>
-      <a href="https://www.malt.fr/profile/davidbassetdeveloppeurfullstacknodejs" class="contact-link">Malt</a>
-      <a href="https://davidbasset.com" class="contact-link">davidbasset.com</a>
+  <div class="wrap">
+    <div class="contact-pre">06 / Contact</div>
+    <a href="mailto:hello@davidbasset.com" class="contact-email">hello@davidbasset.com</a>
+    <div class="contact-footer">
+      <div class="contact-links">
+        <a href="https://github.com/davidbassetjs" class="contact-link">GitHub</a>
+        <a href="https://www.linkedin.com/in/davidbasset" class="contact-link">LinkedIn</a>
+        <a href="https://www.malt.fr/profile/davidbassetdeveloppeurfullstacknodejs" class="contact-link">Malt</a>
+        <a href="https://davidbasset.com" class="contact-link">davidbasset.com</a>
+      </div>
+      <div class="contact-loc">Nantes, France · Remote OK</div>
     </div>
-    <div class="contact-loc">Nantes, France · Remote OK</div>
   </div>
 </section>
 
 <footer>
-  <div class="footer-copy">© 2025 David Basset — Vue · Node · React — Nantes</div>
-  <a href="#home" class="footer-back">↑ Top</a>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2026 David Basset — Senior Forward Deployed Engineer — Nantes</div>
+    <a href="#home" class="footer-back">↑ Back to top</a>
+  </div>
 </footer>
 
 <script>
@@ -411,7 +519,7 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
   }, {threshold: 0.08});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   document.querySelectorAll('.project-row, .exp-row').forEach((el, i) => {
-    el.style.transitionDelay = (i % 4 * 0.08) + 's';
+    el.style.transitionDelay = (i % 4 * 0.07) + 's';
   });
 </script>
 </body>
